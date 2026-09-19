@@ -37,7 +37,7 @@ function renderProducts(){
         <p>${escapeHtml(p.description || "")}</p>
         <div class="price">${money(p.price)}</div>
         <div class="stock">${Number(p.stock) > 0 ? `Disponible · ${Number(p.stock)}` : "Agotado"}</div>
-        <button class="add" ${Number(p.stock) < 1 ? "disabled" : ""} onclick="addToCart(${JSON.stringify(String(p.id))})">Agregar al carrito</button>
+        <button class="add" ${Number(p.stock) < 1 ? "disabled" : ""} onclick="addToCart('${String(p.id)}')">Agregar al carrito</button>
       </div>
     </article>`).join("") : `<p>No encontramos perfumes.</p>`;
 }
