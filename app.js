@@ -92,7 +92,11 @@ function orderMessage(){
   const address = $("#customerAddress").value || "Por confirmar";
   const pay = $("#payment").value;
   const notes = $("#notes").value || "Ninguna";
-  const lines = cart.map(r => { const p = products.find(x => String(x.id) === String(r.id)); return `• ${p.brand || ""} ${p.name} x${r.qty} — ${money(Number(p.price)*r.qty)}`; }).join("\n");
+  
+  const lines = cart.map(r => {
+    const p = products.find(x => String(x.id) === String(r.id));
+    return `• ${p.brand || ""} ${p.name} x${r.qty} — ${money(Number(p.price)*r.qty)}`; 
+  }).join("\n");
   return `Hola, quiero realizar este pedido en Jalu Exclusive:\n\n${lines}\n\nTOTAL: ${money(total())}\n\nCliente: ${name}\nTeléfono: ${phone}\nDistrito: ${district}\nDirección: ${address}\nPago: ${pay}\nObservaciones: ${notes}`;
 }
 
