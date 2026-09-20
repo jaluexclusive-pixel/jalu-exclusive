@@ -1,3 +1,940 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Administración | Jalu Exclusive</title><link rel="stylesheet" href="styles.css"></head><body>
-<header class="header"><a class="brand" href="index.html"><span class="brand-mark">JE</span><div><strong>JALU EXCLUSIVE</strong><small>Administración</small></div></a><a class="primary" href="index.html">Tienda</a></header>
-<main class="admin"><section class="modal-card"><p class="eyebrow">PANEL DE ADMINISTRACIÓN</p><h1>Gestiona tu tienda desde Google Sheets</h1><p>Tu catálogo y tus pedidos están conectados a tu hoja de cálculo. Para agregar, editar o desactivar perfumes, usa la pestaña <b>Productos</b>. Para revisar ventas, usa <b>Pedidos</b>.</p><div class="admin-actions"><a class="primary" target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1FkkIJfz7wnlWPdpIMser4loBUP0KoTj7xUtv_hgmiac/edit">Abrir Google Sheets</a><a class="secondary" href="index.html">Ver tienda</a></div><hr><h2>Cómo agregar un perfume</h2><ol><li>Abre la pestaña <b>Productos</b>.</li><li>Agrega una fila debajo de los productos existentes.</li><li>Completa ID, producto, marca, categoría, precio, stock, descripción e imagen.</li><li>En <b>Activo</b> escribe <b>TRUE</b> para mostrarlo.</li><li>Actualiza la tienda para verlo.</li></ol></section></main></body></html>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Administración | Jalu Exclusive</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .admin-page{
+      max-width:1200px;
+      margin:40px auto;
+      padding:20px;
+    }
+
+    .admin-card{
+      background:#111;
+      border:1px solid rgba(212,175,55,.25);
+      border-radius:18px;
+      padding:28px;
+      margin-bottom:25px;
+    }
+
+    .admin-title{
+      color:#d4af37;
+      margin-bottom:8px;
+    }
+
+    .admin-subtitle{
+      color:#aaa;
+      margin-bottom:25px;
+    }
+
+    .admin-form{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:15px;
+    }
+
+    .admin-form label{
+      display:flex;
+      flex-direction:column;
+      gap:7px;
+      color:#ddd;
+      font-size:14px;
+    }
+
+    .admin-form input,
+    .admin-form select,
+    .admin-form textarea{
+      width:100%;
+      box-sizing:border-box;
+      padding:12px;
+      border-radius:10px;
+      border:1px solid #333;
+      background:#080808;
+      color:white;
+    }
+
+    .admin-form textarea{
+      min-height:100px;
+      resize:vertical;
+    }
+
+    .full{
+      grid-column:1 / -1;
+    }
+
+    .image-box{
+      border:1px dashed rgba(212,175,55,.5);
+      border-radius:12px;
+      padding:18px;
+      background:#080808;
+    }
+
+    .image-preview{
+      display:none;
+      width:150px;
+      height:150px;
+      object-fit:cover;
+      border-radius:12px;
+      margin-top:15px;
+      border:1px solid rgba(212,175,55,.5);
+    }
+
+    .admin-buttons{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:20px;
+    }
+
+    .admin-button{
+      border:0;
+      border-radius:10px;
+      padding:13px 20px;
+      cursor:pointer;
+      font-weight:600;
+    }
+
+    .gold{
+      background:#d4af37;
+      color:#080808;
+    }
+
+    .dark{
+      background:#222;
+      color:white;
+      border:1px solid #444;
+    }
+
+    .message{
+      margin-top:15px;
+      color:#d4af37;
+      min-height:20px;
+    }
+
+    .products-table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:20px;
+    }
+
+    .products-table th,
+    .products-table td{
+      padding:12px 8px;
+      border-bottom:1px solid #292929;
+      text-align:left;
+      color:#ddd;
+      vertical-align:middle;
+    }
+
+    .products-table th{
+      color:#d4af37;
+    }
+
+    .product-thumb{
+      width:55px;
+      height:55px;
+      object-fit:cover;
+      border-radius:8px;
+      border:1px solid #333;
+    }
+
+    .status-active{
+      color:#7ddc8a;
+    }
+
+    .status-inactive{
+      color:#e57373;
+    }
+
+    .small-button{
+      padding:8px 11px;
+      border-radius:8px;
+      border:1px solid #444;
+      background:#181818;
+      color:white;
+      cursor:pointer;
+      margin:2px;
+    }
+
+    @media(max-width:700px){
+      .admin-form{
+        grid-template-columns:1fr;
+      }
+
+      .full{
+        grid-column:auto;
+      }
+
+      .products-table{
+        display:block;
+        overflow-x:auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="header">
+  <a class="brand" href="index.html">
+    <span class="brand-mark">JE</span>
+
+    <div>
+      <strong>JALU EXCLUSIVE</strong>
+      <small>Administración</small>
+    </div>
+  </a>
+
+  <a class="primary" href="index.html">
+    Ver tienda
+  </a>
+</header>
+
+
+<main class="admin-page">
+
+  <!-- FORMULARIO -->
+  <section class="admin-card">
+
+    <p class="eyebrow">PANEL DE ADMINISTRACIÓN</p>
+
+    <h1 class="admin-title">
+      Gestionar productos
+    </h1>
+
+    <p class="admin-subtitle">
+      Agrega nuevos perfumes, modifica los existentes y administra sus imágenes.
+    </p>
+
+
+    <form id="productForm" class="admin-form">
+
+      <input type="hidden" id="productId">
+
+
+      <label>
+        Producto
+        <input
+          type="text"
+          id="productName"
+          placeholder="Ej. Sauvage"
+          required
+        >
+      </label>
+
+
+      <label>
+        Marca
+        <input
+          type="text"
+          id="productBrand"
+          placeholder="Ej. Dior"
+          required
+        >
+      </label>
+
+
+      <label>
+        Categoría
+        <select id="productCategory" required>
+          <option value="">Seleccionar</option>
+          <option value="hombre">Hombre</option>
+          <option value="mujer">Mujer</option>
+          <option value="unisex">Unisex</option>
+        </select>
+      </label>
+
+
+      <label>
+        Precio
+        <input
+          type="number"
+          id="productPrice"
+          step="0.01"
+          min="0"
+          placeholder="299"
+          required
+        >
+      </label>
+
+
+      <label>
+        Stock
+        <input
+          type="number"
+          id="productStock"
+          min="0"
+          placeholder="10"
+          required
+        >
+      </label>
+
+
+      <label class="full">
+        Descripción
+        <textarea
+          id="productDescription"
+          placeholder="Describe la fragancia..."
+        ></textarea>
+      </label>
+
+
+      <!-- IMAGEN -->
+      <label class="full">
+        Imagen del producto
+
+        <div class="image-box">
+
+          <input
+            type="file"
+            id="productImage"
+            accept="image/*"
+          >
+
+          <small>
+            Selecciona una imagen desde tu computadora.
+          </small>
+
+          <img
+            id="imagePreview"
+            class="image-preview"
+            alt="Vista previa"
+          >
+
+        </div>
+      </label>
+
+
+      <label>
+        Estado
+
+        <select id="productActive">
+          <option value="true">Activo</option>
+          <option value="false">Inactivo</option>
+        </select>
+      </label>
+
+
+      <div class="full admin-buttons">
+
+        <button
+          type="submit"
+          class="admin-button gold"
+          id="saveButton"
+        >
+          Guardar producto
+        </button>
+
+        <button
+          type="button"
+          class="admin-button dark"
+          id="cancelButton"
+        >
+          Limpiar
+        </button>
+
+      </div>
+
+    </form>
+
+    <div id="message" class="message"></div>
+
+  </section>
+
+
+  <!-- LISTA DE PRODUCTOS -->
+  <section class="admin-card">
+
+    <p class="eyebrow">
+      CATÁLOGO
+    </p>
+
+    <h2 class="admin-title">
+      Productos registrados
+    </h2>
+
+    <div style="overflow-x:auto;">
+
+      <table class="products-table">
+
+        <thead>
+          <tr>
+            <th>Imagen</th>
+            <th>Producto</th>
+            <th>Marca</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody id="productsTable">
+          <tr>
+            <td colspan="7">
+              Cargando productos...
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<script src="config.js"></script>
+
+<script>
+
+const API = window.JALU_CONFIG.SHEETS_API;
+
+let products = [];
+let selectedImageBase64 = "";
+let editingProductId = null;
+
+
+// =================================================
+// CARGAR PRODUCTOS
+// =================================================
+
+async function loadProducts(){
+
+  try{
+
+    const response = await fetch(
+      API + "?action=productos",
+      { cache:"no-store" }
+    );
+
+    const data = await response.json();
+
+    if(!data.success){
+      throw new Error(data.error || "Error");
+    }
+
+    products = data.products || [];
+
+    renderProducts();
+
+  }catch(error){
+
+    console.error(error);
+
+    document.getElementById("productsTable").innerHTML =
+      `<tr>
+        <td colspan="7">
+          No se pudieron cargar los productos.
+        </td>
+      </tr>`;
+
+  }
+
+}
+
+
+// =================================================
+// MOSTRAR PRODUCTOS
+// =================================================
+
+function renderProducts(){
+
+  const table =
+    document.getElementById("productsTable");
+
+  if(!products.length){
+
+    table.innerHTML =
+      `<tr>
+        <td colspan="7">
+          No hay productos registrados.
+        </td>
+      </tr>`;
+
+    return;
+  }
+
+
+  table.innerHTML = products.map(product => {
+
+    const image = product.image_url
+      ? `<img class="product-thumb"
+          src="${escapeHtml(product.image_url)}"
+          alt="">`
+      : "Sin imagen";
+
+
+    const status =
+      product.active
+        ? `<span class="status-active">Activo</span>`
+        : `<span class="status-inactive">Inactivo</span>`;
+
+
+    return `
+      <tr>
+
+        <td>${image}</td>
+
+        <td>${escapeHtml(product.name || "")}</td>
+
+        <td>${escapeHtml(product.brand || "")}</td>
+
+        <td>S/ ${Number(product.price || 0).toFixed(2)}</td>
+
+        <td>${Number(product.stock || 0)}</td>
+
+        <td>${status}</td>
+
+        <td>
+
+          <button
+            class="small-button"
+            onclick="editProduct('${escapeHtml(String(product.id))}')">
+            Editar
+          </button>
+
+          ${
+            product.active
+            ?
+            `<button
+              class="small-button"
+              onclick="disableProduct('${escapeHtml(String(product.id))}')">
+              Desactivar
+            </button>`
+            :
+            ""
+          }
+
+        </td>
+
+      </tr>
+    `;
+
+  }).join("");
+
+}
+
+
+// =================================================
+// VISTA PREVIA DE IMAGEN
+// =================================================
+
+document
+  .getElementById("productImage")
+  .addEventListener("change", function(){
+
+    const file = this.files[0];
+
+    if(!file){
+      selectedImageBase64 = "";
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(){
+
+      selectedImageBase64 =
+        reader.result;
+
+      const preview =
+        document.getElementById("imagePreview");
+
+      preview.src = reader.result;
+
+      preview.style.display = "block";
+
+    };
+
+    reader.readAsDataURL(file);
+
+  });
+
+
+// =================================================
+// GUARDAR PRODUCTO
+// =================================================
+
+document
+  .getElementById("productForm")
+  .addEventListener("submit", async function(event){
+
+    event.preventDefault();
+
+    const message =
+      document.getElementById("message");
+
+    const button =
+      document.getElementById("saveButton");
+
+    button.disabled = true;
+
+    message.textContent =
+      "Guardando producto...";
+
+
+    try{
+
+      let imageUrl = "";
+
+
+      // -------------------------------------------
+      // SUBIR IMAGEN SI SE SELECCIONÓ
+      // -------------------------------------------
+
+      if(selectedImageBase64){
+
+        message.textContent =
+          "Subiendo imagen a Google Drive...";
+
+
+        const imageResponse =
+          await fetch(API, {
+
+            method:"POST",
+
+            headers:{
+              "Content-Type":
+                "text/plain;charset=utf-8"
+            },
+
+            body:JSON.stringify({
+
+              action:"subir_imagen",
+
+              image_base64:
+                selectedImageBase64
+
+            })
+
+          });
+
+
+        const imageData =
+          await imageResponse.json();
+
+
+        if(!imageData.success){
+
+          throw new Error(
+            imageData.error ||
+            "No se pudo subir la imagen."
+          );
+
+        }
+
+
+        imageUrl =
+          imageData.url;
+
+      }
+
+
+      // -------------------------------------------
+      // DATOS DEL PRODUCTO
+      // -------------------------------------------
+
+      const productData = {
+
+        action:
+          editingProductId
+            ? "editar_producto"
+            : "agregar_producto",
+
+        id:
+          editingProductId ||
+          document.getElementById("productId").value,
+
+        name:
+          document.getElementById("productName").value,
+
+        brand:
+          document.getElementById("productBrand").value,
+
+        category:
+          document.getElementById("productCategory").value,
+
+        price:
+          Number(
+            document.getElementById("productPrice").value
+          ),
+
+        stock:
+          Number(
+            document.getElementById("productStock").value
+          ),
+
+        description:
+          document.getElementById("productDescription").value,
+
+        image_url:
+          imageUrl,
+
+        active:
+          document.getElementById("productActive").value === "true"
+
+      };
+
+
+      message.textContent =
+        "Guardando datos del producto...";
+
+
+      await fetch(API, {
+
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+            "text/plain;charset=utf-8"
+        },
+
+        body:JSON.stringify(productData)
+
+      });
+
+
+      message.textContent =
+        editingProductId
+          ? "Producto actualizado correctamente."
+          : "Producto agregado correctamente.";
+
+
+      resetForm();
+
+      await loadProducts();
+
+
+    }catch(error){
+
+      console.error(error);
+
+      message.textContent =
+        "Error: " + error.message;
+
+    }
+
+
+    button.disabled = false;
+
+  });
+
+
+// =================================================
+// EDITAR PRODUCTO
+// =================================================
+
+function editProduct(id){
+
+  const product =
+    products.find(
+      p => String(p.id) === String(id)
+    );
+
+  if(!product) return;
+
+
+  editingProductId =
+    String(product.id);
+
+
+  document.getElementById("productId").value =
+    product.id;
+
+  document.getElementById("productName").value =
+    product.name || "";
+
+  document.getElementById("productBrand").value =
+    product.brand || "";
+
+  document.getElementById("productCategory").value =
+    product.category || "";
+
+  document.getElementById("productPrice").value =
+    product.price || 0;
+
+  document.getElementById("productStock").value =
+    product.stock || 0;
+
+  document.getElementById("productDescription").value =
+    product.description || "";
+
+  document.getElementById("productActive").value =
+    product.active ? "true" : "false";
+
+
+  selectedImageBase64 = "";
+
+
+  const preview =
+    document.getElementById("imagePreview");
+
+
+  if(product.image_url){
+
+    preview.src =
+      product.image_url;
+
+    preview.style.display =
+      "block";
+
+  }else{
+
+    preview.style.display =
+      "none";
+
+  }
+
+
+  document.getElementById("saveButton").textContent =
+    "Actualizar producto";
+
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+
+// =================================================
+// DESACTIVAR PRODUCTO
+// =================================================
+
+async function disableProduct(id){
+
+  if(!confirm(
+    "¿Quieres desactivar este producto?"
+  )){
+    return;
+  }
+
+
+  const message =
+    document.getElementById("message");
+
+
+  message.textContent =
+    "Desactivando producto...";
+
+
+  try{
+
+    await fetch(API, {
+
+      method:"POST",
+
+      headers:{
+        "Content-Type":
+          "text/plain;charset=utf-8"
+      },
+
+      body:JSON.stringify({
+
+        action:
+          "desactivar_producto",
+
+        id:id
+
+      })
+
+    });
+
+
+    message.textContent =
+      "Producto desactivado correctamente.";
+
+
+    await loadProducts();
+
+
+  }catch(error){
+
+    console.error(error);
+
+    message.textContent =
+      "No se pudo desactivar el producto.";
+
+  }
+
+}
+
+
+// =================================================
+// LIMPIAR FORMULARIO
+// =================================================
+
+document
+  .getElementById("cancelButton")
+  .addEventListener("click", resetForm);
+
+
+function resetForm(){
+
+  editingProductId = null;
+
+  selectedImageBase64 = "";
+
+  document
+    .getElementById("productForm")
+    .reset();
+
+  document
+    .getElementById("productId")
+    .value = "";
+
+  document
+    .getElementById("imagePreview")
+    .style.display = "none";
+
+  document
+    .getElementById("saveButton")
+    .textContent =
+      "Guardar producto";
+
+}
+
+
+// =================================================
+// SEGURIDAD HTML
+// =================================================
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replace(/[&<>'"]/g, function(char){
+
+      return {
+
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        "'":"&#39;",
+        "\"":"&quot;"
+
+      }[char];
+
+    });
+
+}
+
+
+// =================================================
+// INICIAR
+// =================================================
+
+loadProducts();
+
+</script>
+
+</body>
+</html>
