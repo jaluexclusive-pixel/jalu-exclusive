@@ -676,7 +676,11 @@ document
           document.getElementById("productDescription").value,
 
         image_url:
-          imageUrl,
+          imageUrl || (
+    products.find(
+      p => String(p.id) === String(editingProductId)
+    )?.image_url || ""
+  ),
 
         active:
           document.getElementById("productActive").value === "true"
