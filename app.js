@@ -30,7 +30,7 @@ function renderProducts(){
   );
   $("#products").innerHTML = list.length ? list.map(p => `
     <article class="product">
-      <div class="product-img">${p.image_url ? `<img src="${escapeHtml(p.image_url.replace('https://drive.google.com/uc?export=view&id=', 'https://drive.google.com/thumbnail?id=') + '&sz=w1000')}" alt="${escapeHtml(p.name)}">` : `<div class="bottle"><span>JE</span></div>`}</div>
+      <div class="product-img">${p.image_url ? `<img src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.name)}">` : `<div class="bottle"><span>JE</span></div>`}</div>
       <div class="product-info">
         <small>${escapeHtml(p.brand || "")} · ${escapeHtml(p.category || "")}</small>
         <h3>${escapeHtml(p.name || "Perfume")}</h3>
