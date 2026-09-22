@@ -974,7 +974,98 @@ function escapeHtml(value){
 // =================================================
 // INICIAR
 // =================================================
+async function loadOrders(){
 
+  try{
+
+    const response =
+      await fetch(
+        API + "?action=pedidos",
+        { cache:"no-store" }
+      );
+
+    const data =
+      await response.json();
+
+    if(!data.success){
+      throw new Error(
+        data.error || "Error al cargar pedidos"
+      );
+    }
+
+    const orders =
+      data.orders || [];
+
+    const table =
+      document.getElementById("ordersTable");
+
+    if(!orders.length){
+
+      table.innerHTML =
+        `<tr>
+          <td colspan="7">
+            No hay pedidos registrados.
+          </td>
+        </tr>`;
+
+      return;
+    }
+
+    table.innerHTML =
+      orders
+        .slice()
+        .reverse()
+        .map(order => `
+
+          <tr>
+
+            <td>
+              ${escapeHtml(order["Pedido"] || "")}
+            </td>
+
+            <td>
+              ${escapeHtml(order["Cliente"] || "")}
+            </td>
+
+            <td>
+              ${escapeHtml(order["Teléfono"] || "")}
+            </td>
+
+            <td>
+              ${escapeHtml(order["Distrito"] || "")}
+            </td>
+
+            <td>
+              ${escapeHtml(order["Productos"] || "")}
+            </td>
+
+            <td>
+              S/ ${Number(order["Total"] || 0).toFixed(2)}
+            </td>
+
+            <td>
+              ${escapeHtml(order["Estado"] || "")}
+            </td>
+
+          </tr>
+
+        `)
+        .join("");
+
+  }catch(error){
+
+    console.error(error);
+
+    document.getElementById("ordersTable").innerHTML =
+      `<tr>
+        <td colspan="7">
+          No se pudieron cargar los pedidos.
+        </td>
+      </tr>`;
+
+  }
+
+}
 loadProducts();
 loadOrders();
 
