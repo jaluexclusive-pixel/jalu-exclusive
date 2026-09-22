@@ -1106,6 +1106,84 @@ async function loadOrders(){
   }
 
 }
+  async function updateOrderStatus(pedido, estado){
+
+  try{
+
+    const response =
+      await fetch(
+        API,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify({
+            action: "actualizar_estado_pedido",
+            pedido: pedido,
+            estado: estado
+          })
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if(!data.success){
+      throw new Error(
+        data.error || "No se pudo actualizar el estado."
+      );
+    }
+
+    alert(
+      "Estado del pedido " +
+      pedido +
+      " actualizado correctamente."
+    );
+
+    loadOrders();
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "No se pudo actualizar el estado del pedido."
+    );
+
+  }
+
+}
+  document.addEventListener("click", function(event){
+
+  const button =
+    event.target.closest(".save-order-status");
+
+  if(!button){
+    return;
+  }
+
+  const pedido =
+    button.dataset.pedido;
+
+  const select =
+    document.querySelector(
+      `.order-status[data-pedido="${CSS.escape(pedido)}"]`
+    );
+
+  if(!select){
+    return;
+  }
+
+  const estado =
+    select.value;
+
+  updateOrderStatus(
+    pedido,
+    estado
+  );
+
+});
 loadProducts();
 loadOrders();
 
