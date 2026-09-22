@@ -1043,9 +1043,49 @@ async function loadOrders(){
               S/ ${Number(order["Total"] || 0).toFixed(2)}
             </td>
 
-            <td>
-              ${escapeHtml(order["Estado"] || "")}
-            </td>
+           <td>
+
+  <select
+    class="order-status"
+    data-pedido="${escapeHtml(order["Pedido"] || "")}"
+  >
+
+    <option value="Pendiente"
+      ${order["Estado"] === "Pendiente" ? "selected" : ""}>
+      Pendiente
+    </option>
+
+    <option value="Confirmado"
+      ${order["Estado"] === "Confirmado" ? "selected" : ""}>
+      Confirmado
+    </option>
+
+    <option value="Preparando"
+      ${order["Estado"] === "Preparando" ? "selected" : ""}>
+      Preparando
+    </option>
+
+    <option value="Enviado"
+      ${order["Estado"] === "Enviado" ? "selected" : ""}>
+      Enviado
+    </option>
+
+    <option value="Entregado"
+      ${order["Estado"] === "Entregado" ? "selected" : ""}>
+      Entregado
+    </option>
+
+  </select>
+
+  <button
+    type="button"
+    class="save-order-status"
+    data-pedido="${escapeHtml(order["Pedido"] || "")}"
+  >
+    Guardar
+  </button>
+
+</td>
 
           </tr>
 
