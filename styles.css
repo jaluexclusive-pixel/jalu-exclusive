@@ -26,4 +26,5 @@
   display:block;
   position:absolute;
   inset:0;
+  transform:scale(1.7);
 }
