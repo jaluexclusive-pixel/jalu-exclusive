@@ -28,3 +28,103 @@
   inset:0;
   transform:scale(1.85);
 }
+
+/* MEJORAS PARA CELULARES - JALU EXCLUSIVE */
+@media (max-width: 650px) {
+  .header {
+    padding: 12px 4%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hero h1 {
+    font-size: clamp(42px, 12vw, 56px);
+    line-height: 1.05;
+    overflow-wrap: break-word;
+  }
+
+  .hero {
+    min-height: 540px;
+    padding: 42px 6%;
+  }
+
+  .categories {
+    padding: 35px 5% 15px;
+    gap: 12px;
+  }
+
+  .cat {
+    min-height: 155px;
+    padding: 22px;
+  }
+
+  .catalog {
+    padding: 45px 5%;
+  }
+
+  .section-head h2 {
+    font-size: 38px;
+  }
+
+  .products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .product-img {
+    height: 190px;
+  }
+
+  .product-info {
+    padding: 12px;
+  }
+
+  .product-info h3 {
+    font-size: 21px;
+  }
+
+  .product-info p {
+    font-size: 11px;
+  }
+
+  .price {
+    font-size: 16px;
+  }
+
+  .add {
+    padding: 12px 6px;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .drawer-head {
+    padding: 20px;
+  }
+
+  .cart-bottom {
+    padding: 16px;
+  }
+
+  .modal {
+    padding: 10px;
+  }
+
+  .modal-card {
+    padding: 26px 18px;
+    max-height: 92vh;
+    overflow-y: auto;
+  }
+
+  footer {
+    flex-wrap: wrap;
+    padding: 25px 5%;
+  }
+}
