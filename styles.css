@@ -128,3 +128,18 @@
     padding: 25px 5%;
   }
 }
+/* Alinear botones de perfumes */
+.product-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.product-info .add {
+  margin-top: auto;
+}
