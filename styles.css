@@ -129,7 +129,7 @@
   }
 }
 /* Alinear botones de perfumes */
-.product-card {
+.product {
   display: flex;
   flex-direction: column;
 }
