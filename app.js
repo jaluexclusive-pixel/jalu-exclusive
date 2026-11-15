@@ -140,3 +140,29 @@ document.querySelectorAll(".wa").forEach(b => b.onclick = ()=>{
 });
 $("#year").textContent = new Date().getFullYear();
 loadProducts();
+
+// VISTA AMPLIADA DE PRODUCTOS
+const lightbox = document.createElement("div");
+lightbox.id = "productLightbox";
+lightbox.className = "product-lightbox";
+
+lightbox.innerHTML = `
+  <img src="" alt="Imagen ampliada del perfume">
+`;
+
+document.body.appendChild(lightbox);
+
+document.querySelector("#products").addEventListener("click", function(e) {
+  const img = e.target.closest(".product-img img");
+
+  if (!img) return;
+
+  lightbox.querySelector("img").src = img.src;
+  lightbox.querySelector("img").alt = img.alt;
+  lightbox.classList.add("active");
+});
+
+lightbox.addEventListener("click", function() {
+  lightbox.classList.remove("active");
+  lightbox.querySelector("img").src = "";
+});
