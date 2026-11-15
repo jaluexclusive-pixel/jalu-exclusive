@@ -143,3 +143,45 @@
 .product-info .add {
   margin-top: auto;
 }
+
+/* VISTA AMPLIADA DE PERFUMES */
+.product-img img {
+  cursor: zoom-in;
+}
+
+.product-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.94);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  cursor: zoom-out;
+  padding: 20px;
+}
+
+.product-lightbox.active {
+  display: flex;
+}
+
+.product-lightbox img {
+  max-width: 95%;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 10px;
+  animation: zoomPerfume 0.25s ease;
+}
+
+@keyframes zoomPerfume {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
