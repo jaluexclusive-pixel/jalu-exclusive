@@ -307,3 +307,48 @@ body::after {
     navidadBalanceo 4s ease-in-out infinite,
     navidadBrillo 2.5s ease-in-out infinite;
 }
+
+/* LUCES NAVIDEÑAS PARPADEANTES */
+@keyframes lucesNavidad {
+  0%, 100% {
+    opacity: 0.35;
+    box-shadow: 0 0 3px #d6ad62;
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 12px 4px #f5d58b;
+  }
+}
+
+@keyframes lucesRojo {
+  0%, 100% {
+    opacity: 0.4;
+    box-shadow: 0 0 3px #a52e32;
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 12px 4px #d83b42;
+  }
+}
+
+.christmas-banner::before,
+.christmas-banner::after {
+  content: "●  ✦  ●  ✦  ●  ✦  ●";
+  position: absolute;
+  top: 12px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  letter-spacing: 12px;
+  color: #e3c58b;
+  font-size: 12px;
+  animation: lucesNavidad 1.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.christmas-banner::after {
+  top: auto;
+  bottom: 12px;
+  color: #bd4141;
+  animation: lucesRojo 2.2s ease-in-out infinite;
+}
