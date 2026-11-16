@@ -352,3 +352,46 @@ body::after {
   color: #bd4141;
   animation: lucesRojo 2.2s ease-in-out infinite;
 }
+
+/* GUIRNALDA DE LUCES NAVIDEÑAS */
+.luces-guirnalda {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 85px;
+  z-index: 9998;
+  pointer-events: none;
+}
+
+.luces-guirnalda svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.bombilla {
+  position: absolute;
+  font-size: 17px;
+  animation: parpadeoNavidad 1.2s infinite alternate;
+}
+
+.luz-1 { left: 5%; top: 12px; color: #ff2525; }
+.luz-2 { left: 18%; top: 45px; color: #ffe600; animation-delay: .3s; }
+.luz-3 { left: 31%; top: 29px; color: #00df55; animation-delay: .6s; }
+.luz-4 { left: 44%; top: 38px; color: #ff2525; animation-delay: .9s; }
+.luz-5 { left: 57%; top: 38px; color: #ffe600; animation-delay: .2s; }
+.luz-6 { left: 70%; top: 29px; color: #00df55; animation-delay: .5s; }
+.luz-7 { left: 83%; top: 45px; color: #ff2525; animation-delay: .8s; }
+.luz-8 { left: 96%; top: 12px; color: #ffe600; animation-delay: 1s; }
+
+@keyframes parpadeoNavidad {
+  from {
+    opacity: .35;
+    filter: drop-shadow(0 0 2px currentColor);
+  }
+  to {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px currentColor);
+  }
+}
