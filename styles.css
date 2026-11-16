@@ -189,3 +189,62 @@
     opacity: 1;
   }
 }
+/* NAVIDAD JALU EXCLUSIVE */
+.christmas-banner {
+  position: relative;
+  overflow: hidden;
+  margin: 25px 4.5%;
+  padding: 55px 30px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 85% 20%, #493019, transparent 35%),
+    linear-gradient(120deg, #100f0c, #24180f, #100f0c);
+  border: 1px solid #94703b;
+  box-shadow: 0 10px 35px #0008;
+}
+
+.christmas-content span {
+  color: #d8b36b;
+  letter-spacing: 4px;
+  font-size: 11px;
+}
+
+.christmas-content h2 {
+  color: #e3c58b;
+  font: 500 48px 'Cormorant Garamond', serif;
+  margin: 15px 0;
+}
+
+.christmas-content p {
+  color: #c8bba7;
+  font-size: 13px;
+}
+
+.christmas-content a {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 13px 25px;
+  background: #a52e32;
+  color: white;
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+.christmas-decoration {
+  color: #d6ad62;
+  font-size: 25px;
+  margin-top: 20px;
+  letter-spacing: 15px;
+}
+
+@media(max-width:650px) {
+  .christmas-banner {
+    margin: 20px 4%;
+    padding: 40px 15px;
+  }
+
+  .christmas-content h2 {
+    font-size: 36px;
+  }
+}
