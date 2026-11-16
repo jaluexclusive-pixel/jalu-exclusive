@@ -278,3 +278,32 @@ body::after {
     top: 5px;
   }
 }
+
+/* MOVIMIENTO DE ADORNOS NAVIDEÑOS */
+@keyframes navidadBalanceo {
+  0%, 100% {
+    transform: rotate(-8deg) translateY(0);
+  }
+  50% {
+    transform: rotate(8deg) translateY(5px);
+  }
+}
+
+@keyframes navidadBrillo {
+  0%, 100% {
+    opacity: 0.65;
+    filter: drop-shadow(0 0 3px #d6ad62);
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 12px #f5d58b);
+  }
+}
+
+body::before,
+body::after {
+  transform-origin: top center;
+  animation:
+    navidadBalanceo 4s ease-in-out infinite,
+    navidadBrillo 2.5s ease-in-out infinite;
+}
