@@ -449,3 +449,37 @@ body::after {
     filter: drop-shadow(0 0 10px currentColor);
   }
 }
+
+/* ARBOLITO NAVIDEÑO JUNTO A LOS PERFUMES */
+.hero-bottle {
+  position: relative;
+}
+
+.hero-bottle::after {
+  content: "🎄";
+  position: absolute;
+  right: -35px;
+  bottom: 5px;
+  font-size: 65px;
+  z-index: 5;
+  pointer-events: none;
+  filter: drop-shadow(0 0 8px #d6ad62);
+  animation: arbolitoNavidad 3s ease-in-out infinite;
+}
+
+@keyframes arbolitoNavidad {
+  0%, 100% {
+    transform: translateY(0) rotate(-3deg);
+  }
+  50% {
+    transform: translateY(-7px) rotate(3deg);
+  }
+}
+
+@media(max-width:650px) {
+  .hero-bottle::after {
+    font-size: 40px;
+    right: -8px;
+    bottom: 0;
+  }
+}
