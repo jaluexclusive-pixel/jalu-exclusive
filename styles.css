@@ -412,11 +412,17 @@ body::after {
   height: 100%;
 }
 
+
 .bombilla {
   position: absolute;
-  font-size: 17px;
+  font-size: 27px;
+  font-weight: bold;
   animation: parpadeoNavidad 1.2s infinite alternate;
+  text-shadow: 0 0 8px currentColor,
+               0 0 16px currentColor,
+               0 0 25px currentColor;
 }
+
 
 .luz-1 { left: 5%; top: 12px; color: #ff2525; }
 .luz-2 { left: 18%; top: 45px; color: #ffe600; animation-delay: .3s; }
