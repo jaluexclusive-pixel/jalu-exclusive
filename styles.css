@@ -248,3 +248,33 @@
     font-size: 36px;
   }
 }
+
+/* ADORNOS NAVIDEÑOS EN LA PARTE SUPERIOR */
+body::before,
+body::after {
+  position: fixed;
+  top: 8px;
+  z-index: 9999;
+  pointer-events: none;
+  font-size: 27px;
+  line-height: 1.5;
+  filter: drop-shadow(0 0 6px #d6ad62);
+}
+
+body::before {
+  content: "🎄 ✨ 🎁";
+  left: 10px;
+}
+
+body::after {
+  content: "🎁 ✨ 🎄";
+  right: 10px;
+}
+
+@media (max-width: 650px) {
+  body::before,
+  body::after {
+    font-size: 17px;
+    top: 5px;
+  }
+}
